@@ -4,10 +4,18 @@
 \alias{rrf_rates_times}
 \title{Estimate relative lineage rates and node times.}
 \usage{
-rrf_rates_times(phy, outgroup = "", filename = "", plot = TRUE)
+rrf_rates_times(
+  tree.name = "",
+  type = c("NEWICK", "NEXUS"),
+  outgroup = "",
+  filename = "",
+  plot = TRUE
+)
 }
 \arguments{
-\item{phy}{an object of class "phylo".}
+\item{tree.name}{a file name of the branch length tree.}
+
+\item{type}{specify the format of branch length tree. The default is NEWICK.}
 
 \item{outgroup}{a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.}
 
@@ -24,8 +32,7 @@ A timetree with branches colored by the relative rates (<filename>_RRF_timetree.
 This function estimates relative lineage rates and node times from a branch length tree using the relative rate framework (RRF).
 }
 \examples{
-tr <- ape::read.tree("example.nwk")
-rrf_rates_times(phy = tr, outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example", plot = TRUE)
+rrf_rates_times(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example", plot = TRUE)
 }
 \references{
 K. Tamura et al. Mol. Biol. Evol. (2018) 35:1770-1782. doi:10.1093/molbev/msy044.

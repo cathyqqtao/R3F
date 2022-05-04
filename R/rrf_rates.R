@@ -1,18 +1,19 @@
 #' @title Estimate relative lineage rates.
 #' @description This function estimates relative lineage rates from a branch length tree using the relative rate framework (RRF).
-#' @param phy an object of class "phylo".
+#' @param tree.name a file name of the branch length tree.
+#' @param type specify the format of branch length tree. The default is NEWICK.
 #' @param outgroup a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.
 #' @param filename a file name specified for the output file.
 #' @return A table of relative lineage rates (<filename>_RRF_rates.csv).
-#' @examples tr <- ape::read.tree("example.nwk")
-#' @examples rrf_rates(phy = tr, outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example")
+#' @return A tree with relative rates on branches (i.e., branch lengths are rates) (<filename>_RRF_rates.nwk).
+#' @examples rrf_rates(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example")
 #' @author Qiqing Tao (qiqing.tao@temple.edu) and Sudhir Kumar
 #' @references K. Tamura et al. Mol. Biol. Evol. (2018) 35:1770-1782. doi:10.1093/molbev/msy044.
 #' @import ape
 #' @importFrom phangorn Descendants
 #' @export
 #'
-rrf_rates <- function(phy, outgroup = "", filename = ""){
+rrf_rates <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = ""){
 
   ################# check required packages ##############
   if (!library("ape",logical.return = TRUE)){
@@ -22,10 +23,14 @@ rrf_rates <- function(phy, outgroup = "", filename = ""){
     stop("'phangorn' package not found, please install it to run rrf.rates.")
   }
 
-  ################# check brach length tree and outgroup #########
-  ## check outgroups
-  t <- phy
+  ################# check branch length tree and outgroup #########
+  if (type == "NEXUS"){
+    t = ape::read.nexus(tree.name)
+  }else{
+    t <- ape::read.tree(tree.name)
+  }
 
+  ## check outgroups
   suppressWarnings(if (outgroup != ""){
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){
@@ -321,5 +326,10 @@ rrf_rates <- function(phy, outgroup = "", filename = ""){
   out.mat[tips.num+1, "Rate"] <- sprintf("%1.3f",1) ## root rate
 
   write.csv(data.frame(out.mat), file = paste0(filename, "_RRF_rates.csv"), row.names = FALSE)
-  # return(out.mat)
+
+  ####### generate output tree (nexus) with rates ########
+  out.tree <- t
+  out.tree$edge.length <- as.numeric(out.mat[out.tree$edge[,2], "Rate"])
+
+  ape::write.tree(out.tree, file = paste0(filename, "_RRF_rates.nwk"))
 }

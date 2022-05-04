@@ -1,13 +1,13 @@
 #' @title Estimate relative lineage rates and node times.
 #' @description This function estimates relative lineage rates and node times from a branch length tree using the relative rate framework (RRF).
-#' @param phy an object of class "phylo".
+#' @param tree.name a file name of the branch length tree.
+#' @param type specify the format of branch length tree. The default is NEWICK.
 #' @param outgroup a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.
 #' @param filename a file name specified for the output files.
 #' @param plot logical. If TRUE (default), the inferred timetree is plotted with the branches colored by the relative rates.
 #' @return A table of relative lineage rates and node times (<filename>_RRF_table.csv).
 #' @return A timetree with branches colored by the relative rates (<filename>_RRF_timetree.nexus).
-#' @examples tr <- ape::read.tree("example.nwk")
-#' @examples rrf_rates_times(phy = tr, outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example", plot = TRUE)
+#' @examples rrf_rates_times(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example", plot = TRUE)
 #' @author Qiqing Tao (qiqing.tao@temple.edu) and Sudhir Kumar
 #' @references K. Tamura et al. Mol. Biol. Evol. (2018) 35:1770-1782. doi:10.1093/molbev/msy044.
 #' @import ape
@@ -15,7 +15,7 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @export
 
-rrf_rates_times <- function(phy, outgroup = "", filename = "", plot = TRUE){
+rrf_rates_times <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "", plot = TRUE){
 
   ################# check required packages ##############
   if (!library("ape",logical.return = TRUE)){
@@ -27,11 +27,14 @@ rrf_rates_times <- function(phy, outgroup = "", filename = "", plot = TRUE){
   if (!library("RColorBrewer",logical.return = TRUE)){
     stop("'RColorBrewer' package not found, please install it to run rrf.rates.times.")
   }
-  ################# check brach length tree and outgroup #########
-  ## check outgroups
-  # t <- ape::read.tree(tree.name)
-  t <- phy
+  ################# check branch length tree and outgroup #########
+  if (type == "NEXUS"){
+    t = ape::read.nexus(tree.name)
+  }else{
+    t <- ape::read.tree(tree.name)
+  }
 
+  ## check outgroups
   suppressWarnings(if (outgroup != ""){
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){

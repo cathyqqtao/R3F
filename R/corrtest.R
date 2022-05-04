@@ -1,14 +1,14 @@
 #' @title Detect autocorrelated rates.
 #' @description This function tests the hypothesis of independence of evolutionary rates among branches in a phylogeny.
-#' @param phy an object of class "phylo".
+#' @param tree.name a file name of the branch length tree.
+#' @param type specify the format of branch length tree. The default is NEWICK.
 #' @param outgroup a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.
 #' @param sister.resample an integer indicating the number of resampling of sister rate pairs. A large value (>50) is recommended for reliable calculation of the correlation of sister lineage rates when the tree is small (<50 tips). The default value is 0.
 #' @param anchor.node an ingeter corresponding to the ID of a node with user-provide node time. The user-provide value is used to convert relative rates to absolute rates. If anchor.node = 0 (the default), rates will not be converted and are still relative rates.
 #' @param anchor.time a numeric value specifying to the node time of anchor.node. When anchor.node = 0, anchor.time will be ingnored.
 #' @param filename a file name specified for the output file.
 #' @return CorrScore and the P-value for testing the null hypothesis of rate independence (<filename>_corrtest.txt). If non-zero anchor.node and anchor.time are specified, the mean and standard deviation of rates will be provided.
-#' @examples tr <- ape::read.tree("example.nwk")
-#' @examples corrtest(tree.name = "example.nwk", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), sister.resample = 50, anchor.node = 0, anchor.time = 0, filename = "example")
+#' @examples corrtest(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), sister.resample = 50, anchor.node = 0, anchor.time = 0, filename = "example")
 #' @author Qiqing Tao (qiqing.tao@temple.edu) and Sudhir Kumar
 #' @references Q. Tao et al. Mol. Biol. Evol. (2019) 36:811-824. doi:10.1093/molbev/msz014.
 #' @import ape
@@ -17,7 +17,7 @@
 #' @importFrom stats cor.test
 #' @export
 #'
-corrtest <- function(tree.name = "", outgroup = "", sister.resample = 0, anchor.node = 0, anchor.time = 0, filename = ""){
+corrtest <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", sister.resample = 0, anchor.node = 0, anchor.time = 0, filename = ""){
 
   ################# check required packages ##############
   if (!library("ape",logical.return = TRUE)){
@@ -34,9 +34,13 @@ corrtest <- function(tree.name = "", outgroup = "", sister.resample = 0, anchor.
   }
 
   ################# check brach length tree and outgroup #########
-  ## check outgroups
-  t <- phy
+  if (type == "NEXUS"){
+    t = ape::read.nexus(tree.name)
+  }else{
+    t <- ape::read.tree(tree.name)
+  }
 
+  ## check outgroups
   suppressWarnings(if (outgroup != ""){
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){

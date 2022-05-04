@@ -6,6 +6,7 @@
 \usage{
 ddbd(
   tree.name = "",
+  type = c("NEWICK", "NEXUS"),
   outgroup = "",
   sampling.frac = 0,
   anchor.node = 0,
@@ -16,6 +17,10 @@ ddbd(
 )
 }
 \arguments{
+\item{tree.name}{a file name of the branch length tree.}
+
+\item{type}{specify the format of branch length tree. The default is NEWICK.}
+
 \item{outgroup}{a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.}
 
 \item{sampling.frac}{a numeric value representing the sampling fraction. If sampling.frac = 0, sampling fraction will be estimated. Otherwise, it will be fixed to the given value.}
@@ -29,8 +34,6 @@ ddbd(
 \item{filename}{a file name specified for the output file.}
 
 \item{plot}{logical. If TRUE (default), a histogram of node times and a density curve of the estimated parameters of Birth-Death model are plotted.}
-
-\item{phy}{an object of class "phylo".}
 }
 \value{
 Values of parameters in Birth-Death speciation model (<filename>_ddbd.txt). If the sampling.fraction is specified, only birth rate and death rate will be estimated. Otherwise, all three parameters will be estimated.
@@ -42,8 +45,7 @@ This function estimates the values of parameters of Birth-Death speciation tree 
 Birth rate and death rate are estimated using the same time unit as provided in "anchor.time". It is recommened to adjust the time unit, so that the maximum value of "anchor time" does not exceed 10.
 }
 \examples{
-tr <- ape::read.tree("example.nwk")
-ddbd(phy = tr, outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), anchor.node = 272, anchor.time = 1.85, measure = "SSE", filename = "example", plot = TRUE)
+ddbd(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), anchor.node = 272, anchor.time = 1.85, measure = "SSE", filename = "example", plot = TRUE)
 }
 \references{
 Q. Tao et al. Bioinformatics (2021) 37:i102-i110. doi:10.1093/bioinformatics/btab307

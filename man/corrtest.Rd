@@ -6,6 +6,7 @@
 \usage{
 corrtest(
   tree.name = "",
+  type = c("NEWICK", "NEXUS"),
   outgroup = "",
   sister.resample = 0,
   anchor.node = 0,
@@ -14,6 +15,10 @@ corrtest(
 )
 }
 \arguments{
+\item{tree.name}{a file name of the branch length tree.}
+
+\item{type}{specify the format of branch length tree. The default is NEWICK.}
+
 \item{outgroup}{a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.}
 
 \item{sister.resample}{an integer indicating the number of resampling of sister rate pairs. A large value (>50) is recommended for reliable calculation of the correlation of sister lineage rates when the tree is small (<50 tips). The default value is 0.}
@@ -23,8 +28,6 @@ corrtest(
 \item{anchor.time}{a numeric value specifying to the node time of anchor.node. When anchor.node = 0, anchor.time will be ingnored.}
 
 \item{filename}{a file name specified for the output file.}
-
-\item{phy}{an object of class "phylo".}
 }
 \value{
 CorrScore and the P-value for testing the null hypothesis of rate independence (<filename>_corrtest.txt). If non-zero anchor.node and anchor.time are specified, the mean and standard deviation of rates will be provided.
@@ -33,8 +36,7 @@ CorrScore and the P-value for testing the null hypothesis of rate independence (
 This function tests the hypothesis of independence of evolutionary rates among branches in a phylogeny.
 }
 \examples{
-tr <- ape::read.tree("example.nwk")
-corrtest(tree.name = "example.nwk", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), sister.resample = 50, anchor.node = 0, anchor.time = 0, filename = "example")
+corrtest(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), sister.resample = 50, anchor.node = 0, anchor.time = 0, filename = "example")
 }
 \references{
 Q. Tao et al. Mol. Biol. Evol. (2019) 36:811-824. doi:10.1093/molbev/msz014.

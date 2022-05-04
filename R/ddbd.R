@@ -1,6 +1,7 @@
 #' @title Estimate parameter values for Birth-Death speciation prior.
 #' @description This function estimates the values of parameters of Birth-Death speciation tree prior for downstream Bayesian dating analysis from a branch length tree.
-#' @param phy an object of class "phylo".
+#' @param tree.name a file name of the branch length tree.
+#' @param type specify the format of branch length tree. The default is NEWICK.
 #' @param outgroup a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.
 #' @param sampling.frac a numeric value representing the sampling fraction. If sampling.frac = 0, sampling fraction will be estimated. Otherwise, it will be fixed to the given value.
 #' @param anchor.node an ingeter corresponding to the ID of a node with user-provide node time. The user-provide value is used to convert relative rates to absolute rates. If anchor.node = 0 (the default), rates will not be converted and are still relative rates.
@@ -10,8 +11,7 @@
 #' @param plot logical. If TRUE (default), a histogram of node times and a density curve of the estimated parameters of Birth-Death model are plotted.
 #' @details Birth rate and death rate are estimated using the same time unit as provided in "anchor.time". It is recommened to adjust the time unit, so that the maximum value of "anchor time" does not exceed 10.
 #' @return Values of parameters in Birth-Death speciation model (<filename>_ddbd.txt). If the sampling.fraction is specified, only birth rate and death rate will be estimated. Otherwise, all three parameters will be estimated.
-#' @examples tr <- ape::read.tree("example.nwk")
-#' @examples ddbd(phy = tr, outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), anchor.node = 272, anchor.time = 1.85, measure = "SSE", filename = "example", plot = TRUE)
+#' @examples ddbd(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), anchor.node = 272, anchor.time = 1.85, measure = "SSE", filename = "example", plot = TRUE)
 #' @author Qiqing Tao (qiqing.tao@temple.edu) and Sudhir Kumar
 #' @references Q. Tao et al. Bioinformatics (2021) 37:i102-i110. doi:10.1093/bioinformatics/btab307
 #' @import ape
@@ -20,7 +20,7 @@
 #' @importFrom FNN KL.divergence
 #' @export
 
-ddbd <- function(tree.name = "", outgroup = "", sampling.frac = 0, anchor.node = 0, anchor.time = 1, measure = c("SSE","KL"), filename = "", plot = TRUE){
+ddbd <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", sampling.frac = 0, anchor.node = 0, anchor.time = 1, measure = c("SSE","KL"), filename = "", plot = TRUE){
 
   ################# check required packages ##############
   if (!library("ape",logical.return = TRUE)){
@@ -37,9 +37,13 @@ ddbd <- function(tree.name = "", outgroup = "", sampling.frac = 0, anchor.node =
   }
 
   ################# check brach length tree and outgroup #########
-  ## check outgroups
-  t <- phy
+  if (type == "NEXUS"){
+    t = ape::read.nexus(tree.name)
+  }else{
+    t <- ape::read.tree(tree.name)
+  }
 
+  ## check outgroups
   suppressWarnings(if (outgroup != ""){
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){

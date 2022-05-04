@@ -1,18 +1,19 @@
 #' @title Estimate relative node times.
 #' @description This function estimates relative node times from a branch length tree using the relative rate framework (RRF).
-#' @param phy an object of class "phylo".
+#' @param tree.name a file name of the branch length tree.
+#' @param type specify the format of branch length tree. The default is NEWICK.
 #' @param outgroup a character list containing names of tips belonging to the rooting outgroup, which will be removed in the calculation. If outgroup = "" (the default), the input tree must be rooted and no tips will be removed.
 #' @param filename a file name specified for the output files.
 #' @return A table of relative node times (<filename>_RRF_times.csv).
-#' @examples tr <- ape::read.tree("example.nwk")
-#' @examples rrf_times(phy = tr, outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example")
+#' @return A timetree of relative node times (<filename>_RRF_timets.nwk).
+#' @examples rrf_times(tree.name = "example.nwk", type= "NEWICK", outgroup = c("Ornithorhynchus_anatinus", "Zaglossus_bruijni", "Tachyglossus_aculeatus"), filename = "example")
 #' @author Qiqing Tao (qiqing.tao@temple.edu) and Sudhir Kumar
 #' @references K. Tamura et al. Mol. Biol. Evol. (2018) 35:1770-1782. doi:10.1093/molbev/msy044.
 #' @import ape
 #' @importFrom phangorn Descendants Ancestors
 #' @export
 
-rrf_times <- function(tree.name = "", outgroup = "", filename = ""){
+rrf_times <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = ""){
 
   ################# check required packages ##############
   if (!library("ape",logical.return = TRUE)){
@@ -22,10 +23,14 @@ rrf_times <- function(tree.name = "", outgroup = "", filename = ""){
     stop("'phangorn' package not found, please install it to run rrf.times.")
   }
 
-  ################# check brach length tree and outgroup #########
-  ## check outgroups
-  t <- phy
+  ################# check branch length tree and outgroup #########
+  if (type == "NEXUS"){
+    t = ape::read.nexus(tree.name)
+  }else{
+    t <- ape::read.tree(tree.name)
+  }
 
+  ## check outgroups
   suppressWarnings(if (outgroup != ""){
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){
@@ -377,6 +382,12 @@ rrf_times <- function(tree.name = "", outgroup = "", filename = ""){
   out.mat[, "Time"] <- c(rep("0", tips.num), RRF.mat[,"t7.adjust"])
 
   write.csv(data.frame(out.mat), file = paste0(filename, "_RRF_times.csv"), row.names = FALSE)
+
+  ####### generate output tree (nexus) with node times ########
+  out.tree <- t
+  out.tree$edge.length <- as.numeric(out.mat[out.tree$edge[,1], "Time"]) - as.numeric(out.mat[out.tree$edge[,2], "Time"])
+
+  ape::write.tree(out.tree, file = paste0(filename, "_RRF_timetree.nwk"))
 
   # return(out.mat)
 }
