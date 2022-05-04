@@ -16,9 +16,9 @@ devtools::install_github("cathyqqtao/R3F")
 If you encounter an error messge saying that '.../library/R3F/R/R3F.rdb' is corrupt, please restart R or R session. 
 
 ## Usage
-`rrf_rates(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "")` estimates relative lineage rates from a branch length tree using the relative rate framework (RRF). It outputs a table of relative lineage rates (\<filename\>_RRF_rates.csv).
+`rrf_rates(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "")` estimates relative lineage rates from a branch length tree using the relative rate framework (RRF). It outputs a table of relative lineage rates (\<filename\>_RRF_rates.csv) and a tree with relative rates (i.e., the branch lengths are relative rates) (\<filename\>_RRF_rates.nwk).
 
-`rrf_times(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "")` estimates relative node times from a branch length tree using RRF. It outputs a table of relative node times (\<filename\>_RRF_times.csv).
+`rrf_times(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "")` estimates relative node times from a branch length tree using RRF. It outputs a table of relative node times (\<filename\>_RRF_times.csv) and a timetree (\<filename\>_RRF_times.nwk).
 
 `rrf_rates_times(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "", plot = TRUE)` estimates relative node times from a branch length tree using RRF. It outputs a table of relative lineage rates and node times (\<filename\>_RRF_table.csv) and a timetree with relative rates labelled (\<filename\>_RRF_timetree.nexus). It also plots the timetree with branches colored by the relative rates, if `plot=TRUE`.
 
