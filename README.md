@@ -26,8 +26,10 @@ install.packages("RColorBrewer")
 If you encounter an error messge saying that '.../library/R3F/R/R3F.rdb' is corrupt, please restart R or R session. 
 
 If you encounter an error with 'igraph' packge, please try to re-install it via:
+```
 # install.packages("BiocManager")
 BiocManager::install("igraph")
+```
 
 ## Usage
 `rrf_rates(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "")` estimates relative lineage rates from a branch length tree using the relative rate framework (RRF). It outputs a table of relative lineage rates (\<filename\>_RRF_rates.csv) and a tree with relative rates (i.e., the branch lengths are relative rates) (\<filename\>_RRF_rates.nwk).
