@@ -10,10 +10,24 @@ remotes::install_github("cathyqqtao/R3F")
 # Alternatively, install via devtools. Note that manually installation of "Rtools" package may be required for successful use of devtools.  
 # install.packages("devtools")
 devtools::install_github("cathyqqtao/R3F")
+
+
+# The following packages are required by R3F, please install them properly before using R3F.
+install.packages("ape")
+install.packages("phangorn")
+install.packages("FNN")
+install.packages("stats")
+install.packages("stats4")
+install.packages("R.utils")
+install.packages("RColorBrewer")
 ```
 
 ## Troubleshooting
 If you encounter an error messge saying that '.../library/R3F/R/R3F.rdb' is corrupt, please restart R or R session. 
+
+If you encounter an error with 'igraph' packge, please try to re-install it via:
+# install.packages("BiocManager")
+BiocManager::install("igraph")
 
 ## Usage
 `rrf_rates(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", filename = "")` estimates relative lineage rates from a branch length tree using the relative rate framework (RRF). It outputs a table of relative lineage rates (\<filename\>_RRF_rates.csv) and a tree with relative rates (i.e., the branch lengths are relative rates) (\<filename\>_RRF_rates.nwk).
