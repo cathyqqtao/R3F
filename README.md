@@ -25,7 +25,7 @@ install.packages("RColorBrewer")
 ## Troubleshooting
 If you encounter an error messge saying that '.../library/R3F/R/R3F.rdb' is corrupt, please restart R or R session. 
 
-If you encounter an error with 'igraph' packge, please try to re-install it via:
+If you encounter an error with 'igraph' package, please try to re-install it via:
 ```
 # install.packages("BiocManager")
 BiocManager::install("igraph")
