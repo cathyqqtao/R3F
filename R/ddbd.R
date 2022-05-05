@@ -38,7 +38,7 @@ ddbd <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", sampl
 
   ################# check brach length tree and outgroup #########
   if (type == "NEXUS"){
-    t = ape::read.nexus(tree.name)
+    t <- ape::read.nexus(tree.name)
   }else{
     t <- ape::read.tree(tree.name)
   }

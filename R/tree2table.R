@@ -18,7 +18,7 @@ tree2table <- function(tree.name = "", type=c("NEWICK", "NEXUS"), time = FALSE, 
 
   ## check whether branch length tree is binary
   if (type == "NEXUS"){
-    t = ape::read.nexus(tree.name)
+    t <- ape::read.nexus(tree.name)
   }else{
     t <- ape::read.tree(tree.name)
   }
