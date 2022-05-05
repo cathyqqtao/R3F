@@ -50,7 +50,7 @@ BiocManager::install("igraph")
 	<img src="data/example_ddbd.png" width="200">
 </p>
 
-`tree2table(tree.name = "", type=c("NEWICK", "NEXUS"), time = TRUE, filename = "")` converts a tree in NEWICK or NEXUS format to a table (.csv).
+`tree2table(tree.name = "", type=c("NEWICK", "NEXUS"), time = FALSE, filename = "")` converts a tree in NEWICK or NEXUS format to a table (.csv).
 
 ## References
 K. Tamura et al. Mol. Biol. Evol. (2018) 35:1770-1782. doi:[10.1093/molbev/msy044](http://doi.org/10.1093/molbev/msy044).
