@@ -50,7 +50,8 @@ BiocManager::install("igraph")
 	<img src="data/example_ddbd.png" width="200">
 </p>
 
-`tree2table(tree.name = "", type=c("NEWICK", "NEXUS"), time = FALSE, filename = "")` converts a tree in NEWICK or NEXUS format to a table (.csv).
+`tree2table(tree.name = "", type=c("NEWICK", "NEXUS"), time = FALSE, filename = "")` converts a tree in NEWICK or NEXUS format to a table (.csv). If `time=FALSE` (default), the input tree is a branch length tree (i.e., not a timetree) and the branch lengths are outputted in the CSV file. If `time=TRUE`, the input tree is a timetree and the node times and branch times are outputted in the CSV file.
+
 
 ## References
 K. Tamura et al. Mol. Biol. Evol. (2018) 35:1770-1782. doi:[10.1093/molbev/msy044](http://doi.org/10.1093/molbev/msy044).
