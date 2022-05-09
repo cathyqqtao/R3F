@@ -33,7 +33,7 @@ corrtest <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", s
     stop("'R.utils' package not found, please install it to run CorrTest.")
   }
 
-  ################# check brach length tree and outgroup #########
+  ################# check branch length tree and outgroup #########
   if (type == "NEXUS"){
     t <- ape::read.nexus(tree.name)
   }else{

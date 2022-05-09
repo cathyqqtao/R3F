@@ -45,7 +45,7 @@ tree2table <- function(tree.name = "", type=c("NEWICK", "NEXUS"), time = FALSE, 
     }
   }else{
     out.mat <- matrix("-", ncol=6, nrow = ntips+t$Nnode)
-    colnames(out.mat) <- c("NodeLabel", "NodeId", "Des1", "Des2", "Brlen1", "Brlen2", "Time")
+    colnames(out.mat) <- c("NodeLabel", "NodeId", "Des1", "Des2", "Brlen1", "Brlen2")
     out.mat[1:ntips, "NodeLabel"] <- t$tip.label
     out.mat[, "NodeId"] <- c(1:(ntips+t$Nnode))
     for(i in 1:t$Nnode){

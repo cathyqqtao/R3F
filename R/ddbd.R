@@ -36,7 +36,7 @@ ddbd <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", sampl
     stop("'FNN' package not found, please install it to run ddbd.")
   }
 
-  ################# check brach length tree and outgroup #########
+  ################# check branch length tree and outgroup #########
   if (type == "NEXUS"){
     t <- ape::read.nexus(tree.name)
   }else{
