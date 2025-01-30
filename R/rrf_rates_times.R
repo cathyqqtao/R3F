@@ -35,14 +35,15 @@ rrf_rates_times <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup 
   }
 
   ## check outgroups
-  suppressWarnings(if (outgroup != ""){
+  suppressWarnings(if (all(outgroup == "")){
+    stop("No outgroup is found. Please provide a rooted tree or the names of tips in the rooting outgroup.")
+  }else{
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){
         stop(paste("Outgroup \"",outgroup[i], "\" is not found. Please check.",sep=''))
       }
     }
   })
-
 
   ## check whether branch length tree is binary
   if(ape::is.binary(t) == FALSE){
@@ -55,12 +56,12 @@ rrf_rates_times <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup 
   ########################################################################
 
   ## check whether the tree is rooted
-  suppressWarnings(if (outgroup != ""){
+  suppressWarnings(if (any(outgroup != "")){
     t <- ape::root(t, outgroup, resolve.root = TRUE)
     t <- ape::drop.tip(t, outgroup)
   }else{
     if (is.rooted(t) == FALSE){
-      stop("Please provide a rooted tree or the names of tips in the rooting outgroup.")
+      stop("No outgroup is found. Please provide a rooted tree or the names of tips in the rooting outgroup.")
     }
   })
 
