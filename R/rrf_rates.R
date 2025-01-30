@@ -31,13 +31,15 @@ rrf_rates <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", 
   }
 
   ## check outgroups
-  suppressWarnings(if (any(outgroup != "")){
+  if (all(outgroup == "")){
+    stop(paste("No outgroups provided."))
+  }else{
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){
         stop(paste("Outgroup \"",outgroup[i], "\" is not found. Please check.",sep=''))
       }
     }
-  })
+  }
 
   ## check whether branch length tree is binary
   if(ape::is.binary(t) == FALSE){
