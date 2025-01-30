@@ -31,7 +31,7 @@ rrf_rates <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup = "", 
   }
 
   ## check outgroups
-  suppressWarnings(if (any(outgroup) != ""){
+  suppressWarnings(if (any(outgroup != "")){
     for (i in 1:length(outgroup)){
       if(is.na(match(outgroup[i], t$tip.label)) == TRUE){
         stop(paste("Outgroup \"",outgroup[i], "\" is not found. Please check.",sep=''))
