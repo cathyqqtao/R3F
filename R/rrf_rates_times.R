@@ -69,7 +69,7 @@ rrf_rates_times <- function(tree.name = "", type=c("NEWICK", "NEXUS"), outgroup 
   brlen <- t$edge.length
   zero.brlen = length(which(brlen==0))/length(brlen)
   if (zero.brlen >= 0.1){
-    print(paste0("Warning: there are too many zero-length braches (>", floor(zero.brlen*100), "%) in the tree, rates and node times calculation may not be reliable for nodes connecting to those branches."))
+    print(paste0("Warning: there are too many zero-length branches (>", floor(zero.brlen*100), "%) in the tree, rates and node times calculation may not be reliable for nodes connecting to those branches."))
   }
 
   #### get raw relative rates and node times ####
